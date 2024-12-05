@@ -1,0 +1,1 @@
+print(7+len([[a1,p50,p20,p10,p5,p2,2-a1*1-p50*0.5-p20*0.2-p10*0.1-p5*0.05-p2*0.02] for a1 in range(0,2) for p50 in range(0,4) for p20 in range(0,10) for p10 in range(0,20) for p5 in range(0,40) for p2 in range(0,100) if 200-a1*100-p50*50-p20*20-p10*10-p5*5-p2*2 >= 0]))
