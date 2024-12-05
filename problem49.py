@@ -1,6 +1,5 @@
 import math
 
-
 def prime_gen():
   """ Generate an infinite sequence of prime numbers.
     """
@@ -36,7 +35,7 @@ def prime_gen():
       del D[q]
     q += 1
 
-def isPrime(n):
+def is_prime(n):
   if n < 2:
     return False
   if n == 2:
@@ -51,19 +50,28 @@ def isPrime(n):
         return False
     return True
 
-def is_truncatable_prime(n):
-  s = str(n)
-  for i in range(1,len(s)):
-    # print(s[i:])
-    # print(s[:-i])
-    if not isPrime(int(s[i:])):
-      return False
-    if not isPrime(int(s[:-i])):
-      return False
-  return True
+def get_len(i: int):
+  return len(str(i))
 
-sum = 0;
-for i in prime_gen():
-  if i >= 10 and is_truncatable_prime(i):
-    sum += i;
-    print(sum);
+def sequence_gen():
+  for i in prime_gen():
+    for a in range(2,5000):
+      j = i + a
+      k = i + a + a
+      yield (i,j,k)
+
+def triple_length_is_good(i:int,j:int,k:int):
+  return get_len(i) == 4 and get_len(j) == 4 and get_len(k) == 4
+
+def triple_are_prime(i,j,k):
+  return is_prime(j) and is_prime(k)
+
+def triple_are_permutations(i,j,k):
+  i_str = sorted(str(i))
+  j_str = sorted(str(j))
+  k_str = sorted(str(k))
+  return i_str == j_str and j_str == k_str
+
+for (i,j,k) in sequence_gen():
+  if triple_length_is_good(i,j,k) and triple_are_prime(i,j,k) and triple_are_permutations(i,j,k):
+    print(i,j,k)

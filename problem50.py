@@ -1,5 +1,5 @@
 import math
-
+import itertools
 
 def prime_gen():
   """ Generate an infinite sequence of prime numbers.
@@ -36,7 +36,7 @@ def prime_gen():
       del D[q]
     q += 1
 
-def isPrime(n):
+def is_prime(n):
   if n < 2:
     return False
   if n == 2:
@@ -51,19 +51,13 @@ def isPrime(n):
         return False
     return True
 
-def is_truncatable_prime(n):
-  s = str(n)
-  for i in range(1,len(s)):
-    # print(s[i:])
-    # print(s[:-i])
-    if not isPrime(int(s[i:])):
-      return False
-    if not isPrime(int(s[:-i])):
-      return False
-  return True
+primes = [i for i in itertools.takewhile(lambda x: x < 1000000, prime_gen())]
+n_primes = len(primes)
 
-sum = 0;
-for i in prime_gen():
-  if i >= 10 and is_truncatable_prime(i):
-    sum += i;
-    print(sum);
+print(len(primes))
+for l in range(1,n_primes):
+  for i in range(n_primes-l):
+    prime_slice = primes[i:i+l]
+    prime_sum = sum(prime_slice)
+    if prime_sum < 1000000 and is_prime(prime_sum):
+      print(prime_sum, l, len(prime_slice))

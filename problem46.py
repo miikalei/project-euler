@@ -36,7 +36,15 @@ def prime_gen():
       del D[q]
     q += 1
 
-def isPrime(n):
+def composite_gen():
+  i = 2
+  for p in prime_gen():
+    while i < p:
+      yield i
+      i+=1
+    i+= 1
+
+def is_prime(n):
   if n < 2:
     return False
   if n == 2:
@@ -50,20 +58,16 @@ def isPrime(n):
       if n % num == 0:
         return False
     return True
+  
+def passes_conjecture(c: int):
+  n = 1
+  while (c - 2*pow(n,2) > 0):
+    if is_prime(c - 2*pow(n,2)):
+      return True
+    n += 1;
+  return False
 
-def is_truncatable_prime(n):
-  s = str(n)
-  for i in range(1,len(s)):
-    # print(s[i:])
-    # print(s[:-i])
-    if not isPrime(int(s[i:])):
-      return False
-    if not isPrime(int(s[:-i])):
-      return False
-  return True
-
-sum = 0;
-for i in prime_gen():
-  if i >= 10 and is_truncatable_prime(i):
-    sum += i;
-    print(sum);
+for c in composite_gen():
+  if c % 2 == 1 and not passes_conjecture(c):
+    print(c)
+    break

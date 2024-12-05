@@ -1,5 +1,5 @@
+import itertools
 import math
-
 
 def prime_gen():
   """ Generate an infinite sequence of prime numbers.
@@ -36,7 +36,7 @@ def prime_gen():
       del D[q]
     q += 1
 
-def isPrime(n):
+def is_prime(n):
   if n < 2:
     return False
   if n == 2:
@@ -51,19 +51,42 @@ def isPrime(n):
         return False
     return True
 
-def is_truncatable_prime(n):
-  s = str(n)
-  for i in range(1,len(s)):
-    # print(s[i:])
-    # print(s[:-i])
-    if not isPrime(int(s[i:])):
-      return False
-    if not isPrime(int(s[:-i])):
-      return False
-  return True
+def replace_digits(p: int, indices: list[int], d: int):
+  p_str = str(p)
+  ret = ''
+  for i in range(len(p_str)):
+    if i in indices:
+      ret += str(d)
+    else:
+      ret += p_str[i]
+  return int(ret)
 
-sum = 0;
-for i in prime_gen():
-  if i >= 10 and is_truncatable_prime(i):
-    sum += i;
-    print(sum);
+def index_subsets(n: int):
+  return [list(subset) for length in range(1, n+1) for subset in itertools.combinations(range(n), length)]
+
+def count_max_family(p: int):
+  max_count = 0
+  p_str = str(p)
+  for index_subset in index_subsets(len(p_str)):
+    prime_count = 0
+    # print("Trying", index_subset)
+    for d in range(0,10):
+      # replace index subset
+      p_replaced = replace_digits(p, index_subset, d)
+      if is_prime(p_replaced) and len(str(p_replaced)) == len(p_str):
+        print("Counted", p_replaced)
+        prime_count += 1
+    print("And that makes", prime_count)
+    if prime_count >= max_count:
+      max_count = prime_count
+  return max_count
+
+
+def compute():
+  for p in prime_gen():
+    c = count_max_family(p)
+    if c == 8:
+      return p      
+    
+print(count_max_family(120383))
+# print(compute())

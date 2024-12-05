@@ -1,5 +1,7 @@
-import math
-
+digits = [1,2,3,4,5,6,7,8,9]
+def is_pandigital(n):
+  digit_count = len(str(n))
+  return digit_count <= 9 and all((str(d) in str(n) for d in digits[:digit_count]))
 
 def prime_gen():
   """ Generate an infinite sequence of prime numbers.
@@ -36,34 +38,6 @@ def prime_gen():
       del D[q]
     q += 1
 
-def isPrime(n):
-  if n < 2:
-    return False
-  if n == 2:
-    return True
-  if n % 2 == 0:
-    return False
-  if n == 3:
-    return True
-  else:
-    for num in range(3, math.ceil(math.sqrt(n))+1,2):
-      if n % num == 0:
-        return False
-    return True
-
-def is_truncatable_prime(n):
-  s = str(n)
-  for i in range(1,len(s)):
-    # print(s[i:])
-    # print(s[:-i])
-    if not isPrime(int(s[i:])):
-      return False
-    if not isPrime(int(s[:-i])):
-      return False
-  return True
-
-sum = 0;
 for i in prime_gen():
-  if i >= 10 and is_truncatable_prime(i):
-    sum += i;
-    print(sum);
+  if is_pandigital(i):
+    print(i)
